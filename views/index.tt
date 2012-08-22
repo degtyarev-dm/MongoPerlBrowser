@@ -1,0 +1,4 @@
+  <div class="container">
+  <a href="/mongo" class="btn">Открыть MongoDB</a>
+  <a href="/logout" class="btn">Выйти</a>
+  </div>

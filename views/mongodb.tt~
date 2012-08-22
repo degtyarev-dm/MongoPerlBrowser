@@ -1,0 +1,24 @@
+ <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">Databases</li>
+              <% FOREACH db IN dbs %>
+		<li <% IF select==db %>class="active"<%END%>><a href="/mongo/<% db %>"><% db %></a></li>
+		<%END%>
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+         <div class="span9">
+          <%FOREACH collection IN collections%>
+            <div class="span8">
+              <h2><% collection %></h2>
+              <p><a class="btn" href="/mongo/<% select %>/<% collection %>">View details &raquo;</a></p>
+            </div><!--/span-->
+          <%END%>
+          </div><!--/span-->
+         </div><!--/span-->
+          </div><!--/row-->
+        </div><!--/span-->
+      </div><!--/row-->

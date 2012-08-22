@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=<% settings.charset %>" />
+<title><% settings.appname %></title>
+<link rel="stylesheet" href="<% request.uri_base %>/css/simplex.bootstrap.css" />
+<!--<link href="<% request.uri_base %>/css/bootstrap-responsive.css" rel="stylesheet">-->
+<link rel="stylesheet" href="<% request.uri_base %>/css/table-style.css" />
+
+<script src="<% request.uri_base %>/javascripts/jQuery/jquery-1.7.2.min.js"></script>
+<style type="text/css">
+      html, body {
+        background-color: #eee;
+      }
+      body {
+        padding-top: 40px; 
+      }
+      .container {
+        width: 300px;
+      }
+
+      /* The white background content wrapper */
+      .container > .content {
+        background-color: #fff;
+        padding: 20px;
+        margin: 0 -20px; 
+        -webkit-border-radius: 10px 10px 10px 10px;
+           -moz-border-radius: 10px 10px 10px 10px;
+                border-radius: 10px 10px 10px 10px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.15);
+                box-shadow: 0 1px 2px rgba(0,0,0,.15);
+      }
+
+    .login-form {
+      margin-left: 65px;
+    }
+  
+    legend {
+      margin-right: -50px;
+      font-weight: bold;
+      color: #404040;
+    }
+
+    </style>
+</head>
+<body>
+
+<% content %>
+<hr>
+<footer id="footer" class="span11">
+
+Powered by <a href="http://perldancer.org/">Dancer</a> <% dancer_version %>
+Using <a href="http://glyphicons.com/">Glyphicons</a> and <a href="http://twitter.github.com/bootstrap/">Bootstrap</a>
+</footer>
+<script src="<% request.uri_base %>/javascripts/bootstrap-2.0.3/bootstrap.js"></script>
+<script src="<% request.uri_base %>/javascripts/bootstrap-2.0.3/bootstrap-alert.js"></script>
+</body>
+</html>
