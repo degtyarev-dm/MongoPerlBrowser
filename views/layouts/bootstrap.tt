@@ -16,7 +16,7 @@
         padding-top: 40px; 
       }
       .container {
-        width: 300px;
+        width: 440px;
       }
 
       /* The white background content wrapper */
@@ -32,7 +32,7 @@
                 box-shadow: 0 1px 2px rgba(0,0,0,.15);
       }
 
-    .login-form {
+    .form-horizontal {
       margin-left: 65px;
     }
   
@@ -45,7 +45,13 @@
     </style>
 </head>
 <body>
-
+<div id="navbar" class="navbar" style="padding-top: 0px">
+<div class="navbar-inner navbar-fixed-top">
+    <div class="container">
+      <!-- <p class="brand"><a>mongodb://localhost:27017</a>»<a>dereference</a>»<a>dereferenceCollection</a></p> -->
+    </div>
+</div>
+</div>
 <% content %>
 <hr>
 <footer id="footer" class="span11">

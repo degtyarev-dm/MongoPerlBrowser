@@ -29,7 +29,7 @@ engines:
     end_tag:   '%>'
 
 #Plugin
-plugins:
-    Mongo:
-        host: "127.0.0.1"
-        port: "27017"
+# plugins:
+#     Mongo:
+#         host: "127.0.0.1"
+#         port: "27017"

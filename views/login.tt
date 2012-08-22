@@ -1,17 +1,15 @@
  <div class="container">
       <div class="content">
           <div class="row">
-              <div class="login-form">
-                  <h2>Login</h2>
+              <div class="form-horizontal">
+                  <h2>MongoDB</h2>
                   <form action="" method="POST">
                       <fieldset>
                           <div class="clearfix">
-                              <input type="text" placeholder="Username" name="username">
+                              <input type="text" placeholder="mongodb://" name="host">
+                          
+                          <button class="btn primary" type="submit">Подключиться</button>
                           </div>
-                          <div class="clearfix">
-                              <input type="password" placeholder="Password" name="password">
-                          </div>
-                          <button class="btn primary" type="submit">Sign in</button>
                       </fieldset>
                   </form>
               </div>
