@@ -15,13 +15,19 @@ my $host = "";
 my $dbName="";
 my $collectionName="";
 
-get '/' => sub {
-    if (!$mongo) { redirect "/login"; }
-    template 'index';
+hook 'before' => sub {
+    if (!$mongo && request->path_info !~ m{^/login}) 
+    {
+       var requested_path => request->path_info;
+       request->path_info('/login');
+    }
+
 };
 
-
-
+get '/' => sub {
+    # if (!$mongo) { redirect "/login"; }
+    template 'index';
+};
 
 any ['get', 'post'] => '/login' => sub {
    my $err;
@@ -39,7 +45,6 @@ any ['get', 'post'] => '/login' => sub {
          }
   }
 
-  # display login form
   template 'login.tt', { 
     'err' => $err,
   };
@@ -51,26 +56,12 @@ get '/logout' => sub {
    redirect '/';
 };
 
-before_template sub {
-	my $tokens = shift;
-
-	$tokens->{'login_url'} = uri_for('/login');
-	$tokens->{'logout_url'} = uri_for('/logout');
-};
-
 get '/mongo' => sub {
-    if (!$mongo) { redirect "/login"; }
-    else
-    {
       @dbs = $mongo->database_names;
       template 'mongodb', { dbs => [@dbs] , host=>$host};
-    }
   };
 
 get '/mongo/:dbs_name' => sub {
-    if (!$mongo) { redirect "/login"; }
-    else
-    {
       my @resultCollections;
       $dbName = params->{'dbs_name'};
       my $database = $mongo->get_database(params->{'dbs_name'});
@@ -81,13 +72,9 @@ get '/mongo/:dbs_name' => sub {
       }
       
       template 'mongodb', { dbs => [@dbs], select=>params->{'dbs_name'}, collections=>[@resultCollections], dbName=>$dbName, host=>$host};
-    }
 };
 
 get '/mongo/:db_name/:collection_name' => sub {
-    if (!$mongo) { redirect "/login"; }
-    else
-    {
       my ($dbs_name, $collection_name) = (params->{'db_name'}, params->{'collection_name'});
       $collectionName = $collection_name;
       my $collection = $mongo->get_database($dbs_name)->get_collection($collection_name);
@@ -98,7 +85,6 @@ get '/mongo/:db_name/:collection_name' => sub {
           push @objects, $json_encoder->encode($_);
        }
       template 'mongodb.collection', { dbs => [@dbs], select=>$dbs_name, objects=>[@objects], dbName=>$dbName, collectionName=>$collectionName, host=>$host};
-    }
 };
 
 true;
