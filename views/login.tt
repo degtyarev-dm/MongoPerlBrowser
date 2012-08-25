@@ -6,8 +6,9 @@
                   <form action="" method="POST">
                       <fieldset>
                           <div class="clearfix">
-                              <input type="text" placeholder="mongodb://" name="host">
-                          
+                          <div class="input-prepend">
+                            <span class="add-on">mongodb://</span><input class="span2" id="host" size="16" name="host" type="text" placeholder="">
+                          </div>
                           <button class="btn primary" type="submit">Подключиться</button>
                           </div>
                       </fieldset>

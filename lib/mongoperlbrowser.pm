@@ -11,6 +11,9 @@ my $flash;
 my @dbs=();
 my $json_encoder = JSON::XS->new->utf8()->allow_blessed->convert_blessed->pretty();
 my $mongo = undef;
+my $host = "";
+my $dbName="";
+my $collectionName="";
 
 get '/' => sub {
   	if ( !$mongo ) 
@@ -30,6 +33,7 @@ any ['get', 'post'] => '/login' => sub {
          if ( params->{'host'} ) 
          {
            $mongo = MongoDB::Connection->new(host => params->{'host'});
+           $host = params->{'host'};
            redirect "/mongo";
          }
          else 
@@ -62,12 +66,13 @@ get '/mongo' => sub {
    # $mongo = session('$mongo');
    @dbs = $mongo->database_names;
 
-    template 'mongodb', { dbs => [@dbs]};
+    template 'mongodb', { dbs => [@dbs] , host=>$host};
 };
 
 get '/mongo/:dbs_name' => sub {
     #if login
     my @resultCollections;
+    $dbName = params->{'dbs_name'};
     my $database = $mongo->get_database(params->{'dbs_name'});
     my @collections = $database->collection_names;
     for(@collections)
@@ -75,12 +80,13 @@ get '/mongo/:dbs_name' => sub {
         push @resultCollections, $_ if( !/.*?\$.*/ );
     }
     
-    template 'mongodb', { dbs => [@dbs], select=>params->{'dbs_name'}, collections=>[@resultCollections]};
+    template 'mongodb', { dbs => [@dbs], select=>params->{'dbs_name'}, collections=>[@resultCollections], dbName=>$dbName, host=>$host};
 };
 
 get '/mongo/:db_name/:collection_name' => sub {
     #if login
     my ($dbs_name, $collection_name) = (params->{'db_name'}, params->{'collection_name'});
+    $collectionName = $collection_name;
     my $collection = $mongo->get_database($dbs_name)->get_collection($collection_name);
     my @data = $collection->find({})->all;
     my @objects; 
@@ -88,7 +94,7 @@ get '/mongo/:db_name/:collection_name' => sub {
      {
         push @objects, $json_encoder->encode($_);
      }
-    template 'mongodb.collection', { dbs => [@dbs], select=>$dbs_name, objects=>[@objects]};
+    template 'mongodb.collection', { dbs => [@dbs], select=>$dbs_name, objects=>[@objects], dbName=>$dbName, collectionName=>$collectionName, host=>$host};
 };
 
 true;

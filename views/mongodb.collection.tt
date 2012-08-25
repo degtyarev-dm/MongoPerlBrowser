@@ -1,3 +1,10 @@
+ <div id="navbar" class="navbar" style="padding-top: 0px">
+<div class="navbar-inner navbar-fixed-top">
+    <div class="container">
+      <p class="brand"><a href="/mongo">mongodb://<% host %></a>»<a href="/mongo/<% dbName %>"><% dbName %></a>»<a href="/mongo/<% dbName %>/<% collectionName %>"><% collectionName %></a></p> 
+    </div>
+</div>
+</div>
  <div class="container-fluid">
       <div class="row-fluid">
         <div class="span3">
@@ -14,7 +21,7 @@
           
           <div class="row-fluid">
             <%FOREACH object IN objects%>
-              <div class="span8 container" style="margin-left:0;">
+              <div class="span8" style="margin-left:0;">
                 <p><% object %></p>
               </div><!--/span-->
             <%END%>
