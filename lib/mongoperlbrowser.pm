@@ -16,10 +16,7 @@ my $dbName="";
 my $collectionName="";
 
 get '/' => sub {
-  	if ( !$mongo ) 
-    {
-  		redirect "/login";
-    }
+    if (!$mongo) { redirect "/login"; }
     template 'index';
 };
 
@@ -62,39 +59,46 @@ before_template sub {
 };
 
 get '/mongo' => sub {
-    #if login
-   # $mongo = session('$mongo');
-   @dbs = $mongo->database_names;
-
-    template 'mongodb', { dbs => [@dbs] , host=>$host};
-};
+    if (!$mongo) { redirect "/login"; }
+    else
+    {
+      @dbs = $mongo->database_names;
+      template 'mongodb', { dbs => [@dbs] , host=>$host};
+    }
+  };
 
 get '/mongo/:dbs_name' => sub {
-    #if login
-    my @resultCollections;
-    $dbName = params->{'dbs_name'};
-    my $database = $mongo->get_database(params->{'dbs_name'});
-    my @collections = $database->collection_names;
-    for(@collections)
+    if (!$mongo) { redirect "/login"; }
+    else
     {
-        push @resultCollections, $_ if( !/.*?\$.*/ );
+      my @resultCollections;
+      $dbName = params->{'dbs_name'};
+      my $database = $mongo->get_database(params->{'dbs_name'});
+      my @collections = $database->collection_names;
+      for(@collections)
+      {
+          push @resultCollections, $_ if( !/.*?\$.*/ );
+      }
+      
+      template 'mongodb', { dbs => [@dbs], select=>params->{'dbs_name'}, collections=>[@resultCollections], dbName=>$dbName, host=>$host};
     }
-    
-    template 'mongodb', { dbs => [@dbs], select=>params->{'dbs_name'}, collections=>[@resultCollections], dbName=>$dbName, host=>$host};
 };
 
 get '/mongo/:db_name/:collection_name' => sub {
-    #if login
-    my ($dbs_name, $collection_name) = (params->{'db_name'}, params->{'collection_name'});
-    $collectionName = $collection_name;
-    my $collection = $mongo->get_database($dbs_name)->get_collection($collection_name);
-    my @data = $collection->find({})->all;
-    my @objects; 
-    for(@data)
-     {
-        push @objects, $json_encoder->encode($_);
-     }
-    template 'mongodb.collection', { dbs => [@dbs], select=>$dbs_name, objects=>[@objects], dbName=>$dbName, collectionName=>$collectionName, host=>$host};
+    if (!$mongo) { redirect "/login"; }
+    else
+    {
+      my ($dbs_name, $collection_name) = (params->{'db_name'}, params->{'collection_name'});
+      $collectionName = $collection_name;
+      my $collection = $mongo->get_database($dbs_name)->get_collection($collection_name);
+      my @data = $collection->find({})->all;
+      my @objects; 
+      for(@data)
+       {
+          push @objects, $json_encoder->encode($_);
+       }
+      template 'mongodb.collection', { dbs => [@dbs], select=>$dbs_name, objects=>[@objects], dbName=>$dbName, collectionName=>$collectionName, host=>$host};
+    }
 };
 
 true;
