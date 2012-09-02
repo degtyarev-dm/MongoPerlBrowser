@@ -1,9 +1,7 @@
 package mongoperlbrowser;
 use Dancer ':syntax';
-# use Dancer::Plugin::$mongo;
 use MongoDB;
 use Template;
-use Data::Dumper;
 use JSON::XS;
 
 our $VERSION = '0.1';
@@ -25,7 +23,6 @@ hook 'before' => sub {
 };
 
 get '/' => sub {
-    # if (!$mongo) { redirect "/login"; }
     template 'index';
 };
 
@@ -50,11 +47,11 @@ any ['get', 'post'] => '/login' => sub {
   };
 };
 
-get '/logout' => sub {
-   session->destroy;
-   set_flash('You are logged out.');
-   redirect '/';
-};
+# get '/logout' => sub {
+#    session->destroy;
+#    set_flash('You are logged out.');
+#    redirect '/';
+# };
 
 get '/mongo' => sub {
       @dbs = $mongo->database_names;
